@@ -5,7 +5,8 @@ st.set_page_config(layout="centered")
 st.header("Weather Forecast for the Next Days")
 
 place = st.text_input("Place:")
-days = st.slider("Forecast Days:", 1, 5, step=1)
+days = st.slider("Forecast Days:", 1, 5, step=1,
+                 help="Select a number of days to forecast.")
 data_to_view = st.selectbox("Select data to view:", ("Temperature", "Sky"))
 
 info = ""
