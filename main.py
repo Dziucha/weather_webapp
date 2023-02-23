@@ -1,5 +1,6 @@
 import streamlit as st
 import plotly.express as px
+from backend import get_data
 
 st.set_page_config(layout="centered")
 
@@ -19,12 +20,13 @@ if place != "":
         info = st.subheader(f"{data_to_view} for the "
                             f"next {days} days in {place}")
 
+data = get_data(place, days, option)
 
-def get_data(days_local):
-    dates_local = ["2022-25-10", "2022-26-10", "2022-27-10"]
-    temperatures_local = [10, 11, 15]
-    temperatures_local = [days_local * i for i in temperatures_local]
-    return dates_local, temperatures_local
+# def get_data(days_local):
+#     dates_local = ["2022-25-10", "2022-26-10", "2022-27-10"]
+#     temperatures_local = [10, 11, 15]
+#     temperatures_local = [days_local * i for i in temperatures_local]
+#     return dates_local, temperatures_local
 
 
 dates, temperatures = get_data(days)
