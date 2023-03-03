@@ -26,7 +26,6 @@ def get_data(days_local):
     temperatures_local = [days_local * i for i in temperatures_local]
     return dates_local, temperatures_local
 
-
 dates, temperatures = get_data(days)
 figure = px.line(x=dates, y=temperatures,
                  labels={"x": "Date", "y": "Temperature (C)"})
