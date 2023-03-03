@@ -36,4 +36,4 @@ if place:
                  "Rain": "images/rain.png",
                  "Snow": "images/snow.png"}
         image_paths = [image[condition] for condition in sky_conditions]
-        st.image(image_paths)
+        st.image(image_paths, width=115)
