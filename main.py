@@ -21,19 +21,22 @@ if place != "":
                             f"next {days} days in {place.capitalize()}")
 
 if place:
-    filtered_data = get_data(place, days)
+    try:
+        filtered_data = get_data(place, days)
 
-    if type_of_data == "Temperature":
-        dates = [event["dt_txt"] for event in filtered_data]
-        temperatures = [data_set["main"]["temp"] for data_set in filtered_data]
-        figure = px.line(x=dates, y=temperatures,
-                         labels={"x": "Date", "y": "Temperature (C)"})
-        st.plotly_chart(figure)
-    if type_of_data == "Sky":
-        sky_conditions = [data_set["weather"][0]["main"] for data_set in filtered_data]
-        image = {"Clear": "images/clear.png",
-                 "Clouds": "images/cloud.png",
-                 "Rain": "images/rain.png",
-                 "Snow": "images/snow.png"}
-        image_paths = [image[condition] for condition in sky_conditions]
-        st.image(image_paths, width=115)
+        if type_of_data == "Temperature":
+            dates = [event["dt_txt"] for event in filtered_data]
+            temperatures = [data_set["main"]["temp"] for data_set in filtered_data]
+            figure = px.line(x=dates, y=temperatures,
+                             labels={"x": "Date", "y": "Temperature (C)"})
+            st.plotly_chart(figure)
+        if type_of_data == "Sky":
+            sky_conditions = [data_set["weather"][0]["main"] for data_set in filtered_data]
+            image = {"Clear": "images/clear.png",
+                     "Clouds": "images/cloud.png",
+                     "Rain": "images/rain.png",
+                     "Snow": "images/snow.png"}
+            image_paths = [image[condition] for condition in sky_conditions]
+            st.image(image_paths, width=115)
+    except KeyError:
+        st.info("Please enter correct city name.")
