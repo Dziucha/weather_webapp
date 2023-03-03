@@ -1,5 +1,6 @@
 import streamlit as st
 import plotly.express as px
+from backend import get_data
 
 st.set_page_config(layout="centered")
 
@@ -8,25 +9,26 @@ st.header("Weather Forecast for the Next Days")
 place = st.text_input("Place:")
 days = st.slider("Forecast Days:", 1, 5, step=1,
                  help="Select a number of days to forecast.")
-data_to_view = st.selectbox("Select data to view:", ("Temperature", "Sky"))
+type_of_data = st.selectbox("Select data to view:", ("Temperature", "Sky"))
 
 info = ""
 if place != "":
     if days == 1:
-        info = st.subheader(f"{data_to_view} for the "
-                            f"next {days} day in {place}")
+        info = st.subheader(f"{type_of_data} for the "
+                            f"next {days} day in {place.capitalize()}")
     else:
-        info = st.subheader(f"{data_to_view} for the "
-                            f"next {days} days in {place}")
+        info = st.subheader(f"{type_of_data} for the "
+                            f"next {days} days in {place.capitalize()}")
 
+if place:
+    filtered_data = get_data(place, days)
 
-def get_data(days_local):
-    dates_local = ["2022-25-10", "2022-26-10", "2022-27-10"]
-    temperatures_local = [10, 11, 15]
-    temperatures_local = [days_local * i for i in temperatures_local]
-    return dates_local, temperatures_local
-
-dates, temperatures = get_data(days)
-figure = px.line(x=dates, y=temperatures,
-                 labels={"x": "Date", "y": "Temperature (C)"})
-st.plotly_chart(figure)
+    if type_of_data == "Temperature":
+        dates = [dict["dt_txt"] for dict in filtered_data]
+        temperatures = [data_set["main"]["temp"] for data_set in filtered_data]
+        figure = px.line(x=dates, y=temperatures,
+                         labels={"x": "Date", "y": "Temperature (C)"})
+        st.plotly_chart(figure)
+    if type_of_data == "Sky":
+        filtered_data = [data_set["weather"][0]["main"] for data_set in filtered_data]
+        st.image()
